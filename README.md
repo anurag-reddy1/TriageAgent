@@ -55,3 +55,14 @@ Destroy `infra/workers` first, then this folder:
 ```
 terraform destroy
 ```
+
+## How we deploy
+
+Everything deploys into one AWS account (Julia for now), so I'm the only one who runs `terraform apply`. My proposed method for deployment:
+
+1. Write your Terraform in your own folder (`infra/workers`, `infra/api`, and so on).
+2. You can run `terraform fmt` and `terraform validate` locally to catch errors.
+3. Open a PR and tag me.
+4. I'll review it, run `terraform plan` and `apply` from our account, and let you know when it's live.
+
+If you need something from the network folder (a new output, a different subnet), ask in the PR or message me. Open to other deployment ideas.
