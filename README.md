@@ -1,7 +1,22 @@
 # infra/network
  
 Creates the VPC, subnets, route tables, and an optional NAT gateway for TriageAgent.
- 
+
+## Terraform state bucket
+
+Our Terraform state lives in the S3 bucket `triageagent-tfstate-team22` (us-east-1). Every folder uses this same bucket, just with its own `key` in `backend.tf` (for example `network/terraform.tfstate`, `workers/terraform.tfstate`).
+
+I created it once from AWS CloudShell with these commands. You don't need to run them again:
+
+```
+BUCKET=triageagent-tfstate-team22
+aws s3api create-bucket --bucket $BUCKET --region us-east-1
+aws s3api put-bucket-versioning --bucket $BUCKET --versioning-configuration Status=Enabled
+aws s3api put-public-access-block --bucket $BUCKET --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+```
+
+Versioning is on so we can roll back a bad state file, and public access is blocked.
+
 ## First-time setup
  
 ```
